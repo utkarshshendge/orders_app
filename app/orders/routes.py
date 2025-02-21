@@ -15,7 +15,8 @@ def create_order():
         )
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
-    return jsonify({"message": "Order craeted", "order_id": order.order_id}), 201
+    return jsonify({"message": "Order created", "order_id": order.order_id}), 201
+
 
 @orders_blueprint.route('/<order_id>', methods=['GET'])
 def get_order_status(order_id):
@@ -23,6 +24,7 @@ def get_order_status(order_id):
     if not details:
         return jsonify({"error": "Order not found"}), 404
     return jsonify(details)
+
 
 @orders_blueprint.route('/metrics', methods=['GET'])
 def get_metrics():
