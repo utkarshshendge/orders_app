@@ -41,7 +41,7 @@ This API provides endpoints for managing orders, including creation, status retr
 
 ## Base URL
 - Base URL: `http://127.0.0.1:5000/orders`
-- Note: Change base URL according to your local port configuration
+- Note: Change base URL according to your port
 
 ## Endpoints
 
@@ -75,7 +75,7 @@ curl --location 'http://127.0.0.1:5000/orders/' \
 **Success Response (201):**
 ```json
 {
-    "message": "Order craeted",
+    "message": "Order created",
     "order_id": "ORD003"
 }
 ```
@@ -230,6 +230,7 @@ This project follows a modular design approach, adhering to SOLID principles to 
 - Any additional tasks wait in the queue until a worker thread becomes available.
 - The `max_workers` setting can be adjusted based on system capabilities to optimize performance.
 - A random delay is introduced while processing tasks to simulate real-world scenarios where processing time varies due to workload.
+- Added an index on the status field for improved performance for queries that filter on status like the metrics api.
 
 ## Production-Level Improvements
 For a production deployment, the following enhancements need to be done:
@@ -249,6 +250,7 @@ For a production deployment, the following enhancements need to be done:
 # Assumptions:
 - Populate API: Instead of using a script, the database is populated via an API endpoint. See  [this](#4-populate-orders-bulk-creation)
 - The database schema is managed using SQLAlchemy, eliminating the need to manually define the schema in SQL. 
+- The status of orders changes programatically when picked by worker from `Pending` to `Processing` to `Completed` with random delay.
 - As per the scope of assignment, the system only includes the Orders model. However, the codebase is designed to be easily extended to support additional models like Users and Items in the future.
 - Another assumoption is that the DB schema won't change with time, if it changes we'll have to use flask-migrate that uses Alembic, allowing us to track and apply schema changes.
 
