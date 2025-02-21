@@ -201,4 +201,53 @@ curl --location 'http://127.0.0.1:5000/orders/populate' \
 - Order IDs should be unique
 
 
+# Design Decisions & Trade-offs
+
+## Overview
+This project follows a modular design approach, adhering to SOLID principles to ensure scalability and maintainability. The structure allows for easy extension, such as integrating a user management module in the future.
+
+## Design Choices & Rationale
+### **1. Framework & Database**
+- Flask, being synchronous, does not work well with `aiosqlite`. Hence, SQLite is used as the database for simplicity and compatibility.
+- SQLite is sufficient for the current scope but can be replaced with a production-grade database for better concurrency and scalability.
+
+### **2. Task Queue**
+- The project does not use an external distributed task queue like `Celery` because the requirements specified an in-memory queue.
+- The in-memory queue can accumulate a large number of orders, ensuring asynchronous task processing without external dependencies.
+
+### **3. Order Processing Strategy**
+- Orders are processed using a fixed-size `ThreadPoolExecutor` to limit concurrent processing and prevent resource exhaustion.
+- Any additional tasks wait in the queue until a worker thread becomes available.
+- The `max_workers` setting can be adjusted based on system capabilities to optimize performance.
+- A random delay is introduced while processing tasks to simulate real-world scenarios where processing time varies due to workload.
+
+## Production-Level Improvements
+For a production deployment, the following enhancements need to be done:
+
+### **1. Task Queue**
+- Replace the in-memory queue with a distributed task queue like **Celery** to ensure reliable background processing and task persistence.
+
+### **2. Database**
+- Upgrade from SQLite to a production-grade database such as **PostgreSQL** or **MySQL** to support concurrent writes and handle larger datasets efficiently.
+
+### **3. Scalability**
+- Deploy workers on separate machines to distribute the processing load.
+- Use orches)tration tools like **Kubernetes** or **Docker Swarm** to enable horizontal scaling and automated deployment.
+
+
+
+# Assumptions:
+- Populate API: Instead of using a script, the database is populated via an API endpoint. See  [this](https://github.com/utkarshshendge/orders_app/edit/main/README.md#4-populate-orders-bulk-creation)
+- The database schema is managed using SQLAlchemy, eliminating the need to manually define the schema in SQL. 
+- As per the scope of assignment, the system only includes the Orders model. However, the codebase is designed to be easily extended to support additional models like Users and Items in the future.
+- Another assumoption is that the DB schema won't change with time, if it changes we'll have to use flask-migrate that uses Alembic, allowing us to track and apply schema changes.
+
+
+
+
+
+
+
+
+
 
