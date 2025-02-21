@@ -2,6 +2,16 @@
 
 This project is a backend system for managing and processing orders in an e-commerce platform. It provides a RESTful API for order creation, status checking, metrics reporting, and load simulation using an in-memory queue with asynchronous processing. The design is modular, adheres to SOLID principles, and is structured for easy extension (for example, adding a user management module in the future).
 
+
+## Contents
+
+- [Features](#features)
+- [Setting things up](#setting-things-up)
+- [API Documentation](#api-documentation)
+- [Design Decisions & Trade-offs](#design-decisions--trade-offs)
+- [Assumptions](#assumptions)
+
+
 ## Features
 
 - **Order Creation:** Create orders with fields such as `user_id`, `order_id`, `item_ids`, and `total_amount`.
