@@ -247,7 +247,7 @@ For a production deployment, the following enhancements need to be done:
 
 
 # Assumptions:
-- Populate API: Instead of using a script, the database is populated via an API endpoint. See  [this](https://github.com/utkarshshendge/orders_app/edit/main/README.md#4-populate-orders-bulk-creation)
+- Populate API: Instead of using a script, the database is populated via an API endpoint. See  [this](#4-populate-orders-bulk-creation)
 - The database schema is managed using SQLAlchemy, eliminating the need to manually define the schema in SQL. 
 - As per the scope of assignment, the system only includes the Orders model. However, the codebase is designed to be easily extended to support additional models like Users and Items in the future.
 - Another assumoption is that the DB schema won't change with time, if it changes we'll have to use flask-migrate that uses Alembic, allowing us to track and apply schema changes.
